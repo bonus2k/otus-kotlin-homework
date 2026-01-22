@@ -1,4 +1,4 @@
-package ru.otus.kotlin.snkatvit.app
+package ru.otus.kotlin.compose2.main
 
 fun main() {
     val name = "Kotlin"
