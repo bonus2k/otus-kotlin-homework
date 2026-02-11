@@ -6,7 +6,7 @@ gradlePlugin {
     plugins{
         register("build-jvm"){
             id = "build-jvm"
-            implementationClass = "ru.otus.kotlin.buildplugin.MyPlugin"
+            implementationClass = "ru.otus.kotlin.buildplugin.JvmBuild"
         }
         register("build-kmp"){
             id = "build-kmp"
@@ -22,7 +22,9 @@ repositories {
 
 
 dependencies {
-    implementation("org.jetbrains.kotlin:kotlin-gradle-plugin")
+    implementation(files(libs.javaClass.superclass.protectionDomain.codeSource.location))
+    implementation(libs.plugin.kotlin)
+    implementation(libs.plugin.binaryCompatibilityValidator)
     testImplementation(kotlin("test-junit5"))
 }
 

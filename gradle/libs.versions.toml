@@ -1,5 +1,12 @@
 [versions]
 kotlinx-cli = "0.3.6"
+kotlin = "2.2.21"
+binaryCompabilityValidator = "0.13.2"
+
+jvm-compiler = "21"
+jvm-language = "21"
 
 [libraries]
+plugin-kotlin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 kotlinx-cli = { module = "org.jetbrains.kotlinx:kotlinx-cli", version.ref = "kotlinx-cli" }
+plugin-binaryCompatibilityValidator = { module = "org.jetbrains.kotlinx:binary-compatibility-validator", version.ref = "binaryCompabilityValidator" }
