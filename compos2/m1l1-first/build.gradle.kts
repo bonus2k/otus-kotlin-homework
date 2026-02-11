@@ -1,4 +1,0 @@
-plugins {
-    id("build-jvm")
-}
-
