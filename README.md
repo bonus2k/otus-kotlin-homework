@@ -140,3 +140,6 @@
 
 ![Architecture](docs/architecture.png)
 [Source](docs/architecture.svg)
+
+- [Example UI online](https://www.figma.com/make/9HMxqRtRgfUqncCmn7kb7R/CoachDesk-Mobile-App-UI)
+- [Example UI project](coachdesk_ui)
