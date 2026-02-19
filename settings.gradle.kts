@@ -1,6 +1,5 @@
 
-rootProject.name = "root"
+rootProject.name = "otus-kotlin-homework"
 
-includeBuild("compos1")
-includeBuild("compos2")
+includeBuild("ok-coachdesk")
 includeBuild("build-plugin")

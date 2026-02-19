@@ -1,0 +1,85 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      - POSTGRES_DB=test
+      - POSTGRES_USER=test
+      - POSTGRES_PASSWORD=test
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U test -d test -h localhost" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.0
+    command:
+      - start-dev
+      - --import-realm
+    environment:
+      KC_DB: postgres
+      KC_DB_URL_HOST: postgres
+      KC_DB_URL_DATABASE: test
+      KC_DB_USERNAME: test
+      KC_DB_PASSWORD: test
+
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+
+      KC_PROXY: edge
+      KC_HTTP_ENABLED: "true"
+    depends_on:
+      - postgres
+    ports:
+      - "8081:8080"
+
+  opensearch:
+    image: opensearchproject/opensearch:2.14.0
+    environment:
+      OPENSEARCH_INITIAL_ADMIN_PASSWORD: "utheel7Aed]iyu0"
+      discovery.type: single-node
+      plugins.security.disabled: "true"
+      OPENSEARCH_JAVA_OPTS: "-Xms512m -Xmx512m"
+      bootstrap.memory_lock: "true"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - os_data:/usr/share/opensearch/data
+    ports:
+      - "9200:9200"
+      - "9600:9600"
+
+  opensearch-dashboards:
+    image: opensearchproject/opensearch-dashboards:2.14.0
+    environment:
+      OPENSEARCH_HOSTS: '["http://opensearch:9200"]'
+      DISABLE_SECURITY_DASHBOARDS_PLUGIN: "true"
+    depends_on:
+      - opensearch
+    ports:
+      - "5601:5601"
+
+#  coachdesk:
+#    build: .
+#    environment:
+#      # это примерные env, env будут уточнены во время написания сервиса
+#      DATASOURCE_URL: jdbc:postgresql://postgres:5432/coachdesk
+#      DATASOURCE_USERNAME: coachdesk
+#      DATASOURCE_PASSWORD: coachdesk
+#      OAUTH2_RESOURCESERVER_JWT_ISSUER_URI: http://keycloak:8080/realms/coachdesk
+#      OPENSEARCH_URL: http://opensearch:9200
+#    depends_on:
+#      - postgres
+#      - keycloak
+#      - opensearch
+#    ports:
+#      - "8080:8080"
+
+volumes:
+  pg_data:
+  os_data:
